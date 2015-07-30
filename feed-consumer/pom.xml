@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -8,9 +10,10 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>feed-producer</artifactId>
+    <artifactId>feed-consumer</artifactId>
     <name>${project.groupId} - ${project.artifactId}</name>
     <packaging>war</packaging>
+
 
     <dependencies>
         <!-- Import the JAX-RS API, we use provided scope as the API is included in JBoss WildFly -->
@@ -34,7 +37,7 @@
     </dependencies>
 
     <build>
-        <!-- Set the name of the war, used as the context root when the app 
+        <!-- Set the name of the war, used as the context root when the app
             is deployed -->
         <finalName>${project.artifactId}</finalName>
         <plugins>

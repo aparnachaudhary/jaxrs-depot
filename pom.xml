@@ -39,6 +39,7 @@
 
     <modules>
         <module>feed-producer</module>
+        <module>feed-consumer</module>
     </modules>
 
     <properties>
