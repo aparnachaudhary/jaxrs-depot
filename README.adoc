@@ -1,0 +1,33 @@
+== WildFly DC
+
+docker run -it -p 9990:9990 -p 9999:9999 aparnachaudhary/wildfly-dc:9.0.0.Final
+
+sh /opt/jboss/wildfly/bin/domain.sh -b 0.0.0.0 -bmanagement 0.0.0.0 --host-config host-master.xml
+
+== WildFly HC1
+
+docker run -it -p 7991:9990 -p 7081:8080 aparnachaudhary/wildfly-hc:9.0.0.Final
+
+Remove server-one from the host xml.
+
+sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node1 --host-config host-slave.xml
+
+== WildFly HC2
+
+docker run -it -p 7992:9990 -p 7082:8080 aparnachaudhary/wildfly-hc:9.0.0.Final
+
+Remove server-one from the host xml.
+
+sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node2 --host-config host-slave.xml
+
+== Deploy WAR files
+
+deploy /Users/Aparna/dev/repos/service-discovery/feed-producer/target/feed-producer.war --server-groups=other-server-group
+
+deploy /Users/Aparna/dev/repos/service-discovery/feed-consumer/target/feed-consumer.war --server-groups=other-server-group
+
+== Verify cache behavior
+
+http://192.168.59.103:7081/feed-producer/rest/producer/greet
+
+http://192.168.59.103:7081/feed-consumer/rest/consumer/goodbye

@@ -9,7 +9,7 @@ import javax.ws.rs.Produces;
  *
  * @author Aparna Chaudhary
  */
-@Path("/")
+@Path("/consumer")
 public interface FeedConsumerResource {
 
     @Path("goodbye")

@@ -13,17 +13,30 @@
     <packaging>war</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.aparnachaudhary</groupId>
+            <artifactId>registry</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!-- Import the JAX-RS API, we use provided scope as the API is included in JBoss WildFly -->
         <dependency>
             <groupId>org.jboss.spec.javax.ws.rs</groupId>
             <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <!-- Import the CDI API, we use provided scope as the API is included in JBoss WildFly -->
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
