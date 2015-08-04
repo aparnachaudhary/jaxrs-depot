@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.aparnachaudhary</groupId>
-    <artifactId>service-discovery</artifactId>
+    <groupId>com.github.aparnachaudhary.kosh</groupId>
+    <artifactId>kosh-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <name>Service Discovery Example</name>
+    <name>${project.groupId} - ${project.artifactId}</name>
     <description>Project to demonstrate REST Service discovery using WildFly and Infinispan</description>
-    <url>https://github.com/aparnachaudhary/service-discovery</url>
+    <url>https://github.com/aparnachaudhary/kosh</url>
     <packaging>pom</packaging>
 
     <issueManagement>
-        <url>https://github.com/aparnachaudhary/service-discovery/issues</url>
+        <url>https://github.com/aparnachaudhary/kosh/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -24,9 +24,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/aparnachaudhary/service-discovery</url>
-        <connection>scm:git:git://github.com/aparnachaudhary/service-discovery.git</connection>
-        <developerConnection>scm:git:git@github.com:aparnachaudhary/service-discovery.git</developerConnection>
+        <url>https://github.com/aparnachaudhary/kosh</url>
+        <connection>scm:git:git://github.com/aparnachaudhary/kosh.git</connection>
+        <developerConnection>scm:git:git@github.com:aparnachaudhary/kosh.git</developerConnection>
     </scm>
 
     <developers>
@@ -38,9 +38,8 @@
     </developers>
 
     <modules>
-        <module>feed-producer</module>
-        <module>feed-consumer</module>
-        <module>registry</module>
+        <module>core</module>
+        <module>examples</module>
     </modules>
 
     <properties>
@@ -49,10 +48,11 @@
 
         <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
 
-        <!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
+        <!-- Define the version of the JBoss BOMs we want to import. -->
         <version.jboss.bom>9.0.0.Final</version.jboss.bom>
         <version.wildfly>9.0.0.Final</version.wildfly>
         <version.org.infinispan>7.2.3.Final</version.org.infinispan>
+        <version.slf4j-api>1.7.5</version.slf4j-api>
 
         <!-- other plugin versions -->
         <version.maven.compiler.plugin>3.1</version.maven.compiler.plugin>
@@ -63,7 +63,6 @@
         <!-- maven-compiler-plugin -->
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <version.slf4j-api>1.7.5</version.slf4j-api>
     </properties>
 
     <dependencyManagement>
@@ -93,11 +92,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${version.slf4j-api}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.aparnachaudhary</groupId>
-                <artifactId>registry</artifactId>
-                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

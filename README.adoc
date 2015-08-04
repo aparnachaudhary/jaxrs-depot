@@ -22,9 +22,15 @@ sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103
 
 == Deploy WAR files
 
-deploy /Users/Aparna/dev/repos/service-discovery/feed-producer/target/feed-producer.war --server-groups=other-server-group
+[source,bash]
+-------------
+deploy /Users/Aparna/dev/repos/kosh/examples/feed-producer/target/feed-producer.war --server-groups=other-server-group
+-------------
 
-deploy /Users/Aparna/dev/repos/service-discovery/feed-consumer/target/feed-consumer.war --server-groups=other-server-group
+[source,bash]
+-------------
+deploy /Users/Aparna/dev/repos/kosh/examples/feed-producer/target/feed-consumer.war --server-groups=other-server-group
+-------------
 
 == Verify cache behavior
 
