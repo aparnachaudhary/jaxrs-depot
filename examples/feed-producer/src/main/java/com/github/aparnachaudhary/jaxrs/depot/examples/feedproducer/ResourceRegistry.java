@@ -1,6 +1,8 @@
 package com.github.aparnachaudhary.jaxrs.depot.examples.feedproducer;
 
-import com.github.aparnachaudhary.jaxrs.depot.core.registry.*;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -24,9 +26,10 @@ public class ResourceRegistry {
 
     @PostConstruct
     public void register() {
-        EndpointId endpointId = new EndpointIdBuilder().setNodeId(System.getProperty(NODE_NAME)).setAppId("feed-producer").setEndpointId("producer")
+        EndpointId endpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeId(System.getProperty(NODE_NAME)).setAppId("feed-producer")
+                .setEndpointId("producer")
                 .createEndpointId();
-        EndpointInfo endpointInfo = new EndpointInfoBuilder().setEndpointId(endpointId).setBaseUri(getBaseUri("feed-producer/rest/"))
+        EndpointInfo endpointInfo = EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(endpointId).setBaseUri(getBaseUri("feed-producer/rest/"))
                 .setServiceRoot("producer").createEndpointInfo();
         endpointRegistry.addEndpoint(endpointInfo);
     }

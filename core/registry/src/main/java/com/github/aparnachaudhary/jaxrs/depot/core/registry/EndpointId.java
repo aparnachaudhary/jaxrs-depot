@@ -47,4 +47,38 @@ public class EndpointId implements Serializable {
                 ", endpointId='" + endpointId + '\'' +
                 '}';
     }
+
+
+    public static final class EndpointIdBuilder {
+
+        private String nodeId;
+        private String appId;
+        private String endpointId;
+
+        private EndpointIdBuilder() {
+        }
+
+        public static EndpointIdBuilder newBuilder() {
+            return new EndpointIdBuilder();
+        }
+
+        public EndpointIdBuilder setNodeId(String nodeId) {
+            this.nodeId = nodeId;
+            return this;
+        }
+
+        public EndpointIdBuilder setAppId(String appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        public EndpointIdBuilder setEndpointId(String endpointId) {
+            this.endpointId = endpointId;
+            return this;
+        }
+
+        public EndpointId createEndpointId() {
+            return new EndpointId(nodeId, appId, endpointId);
+        }
+    }
 }

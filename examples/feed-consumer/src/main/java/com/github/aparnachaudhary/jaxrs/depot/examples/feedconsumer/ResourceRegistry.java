@@ -1,6 +1,8 @@
 package com.github.aparnachaudhary.jaxrs.depot.examples.feedconsumer;
 
-import com.github.aparnachaudhary.jaxrs.depot.core.registry.*;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -24,11 +26,12 @@ public class ResourceRegistry {
 
     @PostConstruct
     public void register() {
-        EndpointId endpointId = new EndpointIdBuilder().setNodeId(System.getProperty(NODE_NAME)).setAppId("feed-consumer").setEndpointId("consumer")
+        EndpointId endpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeId(System.getProperty(NODE_NAME)).setAppId("feed-consumer")
+                .setEndpointId("consumer")
                 .createEndpointId();
-        EndpointId producerEndpointId = new EndpointIdBuilder().setAppId("feed-producer").setEndpointId("producer")
+        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppId("feed-producer").setEndpointId("producer")
                 .createEndpointId();
-        EndpointInfo endpointInfo = new EndpointInfoBuilder().setEndpointId(endpointId).setBaseUri(getBaseUri("feed-consumer/rest/"))
+        EndpointInfo endpointInfo = EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(endpointId).setBaseUri(getBaseUri("feed-consumer/rest/"))
                 .setServiceRoot("consumer").addDependency(producerEndpointId).createEndpointInfo();
         endpointRegistry.addEndpoint(endpointInfo);
     }

@@ -1,7 +1,6 @@
 package com.github.aparnachaudhary.jaxrs.depot.core.registry.infinispan;
 
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
-import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import org.infinispan.notifications.Listener;
 import org.infinispan.notifications.cachemanagerlistener.annotation.ViewChanged;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
