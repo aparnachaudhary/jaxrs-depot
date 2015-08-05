@@ -2,13 +2,14 @@ package com.github.aparnachaudhary.jaxrs.depot.examples.feedconsumer;
 
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.event.EndpointAdded;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.event.EndpointRemoved;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
 
 /**
  * Default service implementation for {@link FeedConsumerResource}
@@ -30,4 +31,5 @@ public class FeedConsumerService implements FeedConsumerResource {
         }
         return "FeedConsumer";
     }
+
 }

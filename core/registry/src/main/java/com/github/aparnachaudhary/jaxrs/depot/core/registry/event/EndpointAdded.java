@@ -5,7 +5,7 @@ import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 /**
  * @author Aparna Chaudhary
  */
-public class EndpointAdded {
+public class EndpointAdded implements EndpointEvent{
 
     private EndpointId endpointId;
 

@@ -3,6 +3,7 @@ package com.github.aparnachaudhary.jaxrs.depot.core.registry.infinispan;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.event.EndpointEvent;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.util.PojoMapper;
 import org.infinispan.manager.CacheContainer;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,11 +36,14 @@ public class InfinispanRegistry implements EndpointRegistry {
 
     private Map<String, String> cache;
 
+    @Inject
+    private Event<EndpointEvent> event;
+
     @PostConstruct
     public void init() {
         this.cache = cc.getCache();
         cc.getCache().getCacheManager().addListener(new MemberDropListener(cache));
-        cc.getCache().addListener(new ClusteredCacheListener());
+        cc.getCache().addListener(new ClusteredCacheListener(event));
         LOG.info("Cache {}", cc.getCache().keySet());
     }
 

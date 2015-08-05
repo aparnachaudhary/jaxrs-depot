@@ -3,10 +3,14 @@ package com.github.aparnachaudhary.jaxrs.depot.examples.feedconsumer;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.event.EndpointAdded;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.management.*;
 import java.lang.management.ManagementFactory;
@@ -17,6 +21,8 @@ import java.lang.management.ManagementFactory;
 @Singleton
 @Startup
 public class ResourceRegistry {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ResourceRegistry.class);
 
     private static final String NODE_NAME = "jboss.node.name";
     private static final String HTTP_PORT = "jboss.http.port";
@@ -55,4 +61,5 @@ public class ResourceRegistry {
         }
         return baseUri;
     }
+
 }
