@@ -1,5 +1,7 @@
-package com.github.aparnachaudhay.registry.infinispan;
+package com.github.aparnachaudhary.jaxrs.depot.core.registry.infinispan;
 
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import org.infinispan.notifications.Listener;
 import org.infinispan.notifications.cachemanagerlistener.annotation.ViewChanged;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
@@ -7,6 +9,7 @@ import org.infinispan.remoting.transport.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +46,17 @@ public class MemberDropListener {
 
     void dropAllServices(Address address) {
         if (cache == null) {
-            LOG.info("Cache is null");
+            LOG.warn("Cache is null");
         } else {
-            cache.keySet().stream().filter(node -> node.startsWith(address.toString() + "/")).forEach(cache::remove);
+            cache.keySet().stream().filter(
+                    endpointId -> {
+                        try {
+                            return JsonUtil.fromJson(endpointId, EndpointId.class).getNodeId().equalsIgnoreCase(address.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return false;
+                        }
+                    }).forEach(cache::remove);
         }
     }
 }

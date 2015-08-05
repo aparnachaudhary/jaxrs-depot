@@ -2,16 +2,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.aparnachaudhary.kosh</groupId>
-    <artifactId>kosh-parent</artifactId>
+    <groupId>com.github.aparnachaudhary.jaxrs.depot</groupId>
+    <artifactId>jaxrs.depot.parent</artifactId>
     <version>0.1-SNAPSHOT</version>
     <name>${project.groupId} - ${project.artifactId}</name>
     <description>Project to demonstrate REST Service discovery using WildFly and Infinispan</description>
-    <url>https://github.com/aparnachaudhary/kosh</url>
+    <url>https://github.com/aparnachaudhary/jaxrs-depot</url>
     <packaging>pom</packaging>
 
     <issueManagement>
-        <url>https://github.com/aparnachaudhary/kosh/issues</url>
+        <url>https://github.com/aparnachaudhary/jaxrs-depot/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
 
@@ -24,9 +24,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/aparnachaudhary/kosh</url>
-        <connection>scm:git:git://github.com/aparnachaudhary/kosh.git</connection>
-        <developerConnection>scm:git:git@github.com:aparnachaudhary/kosh.git</developerConnection>
+        <url>https://github.com/aparnachaudhary/jaxrs-depot</url>
+        <connection>scm:git:git://github.com/aparnachaudhary/jaxrs-depot.git</connection>
+        <developerConnection>scm:git:git@github.com:aparnachaudhary/jaxrs-depot.git</developerConnection>
     </scm>
 
     <developers>

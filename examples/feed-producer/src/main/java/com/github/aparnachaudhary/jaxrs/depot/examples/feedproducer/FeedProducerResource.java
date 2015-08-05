@@ -1,4 +1,4 @@
-package com.github.aparnachaudhay.feedproducer;
+package com.github.aparnachaudhary.jaxrs.depot.examples.feedproducer;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

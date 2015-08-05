@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.aparnachaudhary.kosh.core</groupId>
-        <artifactId>core-parent</artifactId>
+        <groupId>com.github.aparnachaudhary.jaxrs.depot.core</groupId>
+        <artifactId>core.parent</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
@@ -23,15 +23,20 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.spec.javax.ejb</groupId>
-            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.2_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- We use the Infinispan provided by Wildfly -->
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
-            <!-- Provided as we use the Infinispan provided by Wildfly -->
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.5.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

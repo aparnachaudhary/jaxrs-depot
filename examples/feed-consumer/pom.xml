@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.aparnachaudhary.kosh.examples</groupId>
-        <artifactId>examples-parent</artifactId>
+        <groupId>com.github.aparnachaudhary.jaxrs.depot.examples</groupId>
+        <artifactId>examples.parent</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
@@ -17,7 +17,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.aparnachaudhary.kosh.core</groupId>
+            <groupId>com.github.aparnachaudhary.jaxrs.depot.core</groupId>
             <artifactId>registry</artifactId>
         </dependency>
         <dependency>

@@ -1,6 +1,7 @@
-package com.github.aparnachaudhay.feedproducer;
+package com.github.aparnachaudhary.jaxrs.depot.examples.feedproducer;
 
-import com.github.aparnachaudhay.registry.EndpointRegistry;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ public class FeedProducerService implements FeedProducerResource {
 
     @Override
     public String sayHi() {
-        for (String endpoint : endpointRegistry.getEndpoints()) {
+        for (EndpointInfo endpoint : endpointRegistry.getEndpoints()) {
             LOG.info("Endpoint Name {}", endpoint);
         }
         return "FeedProducer";

@@ -1,4 +1,4 @@
-package com.github.aparnachaudhay.feedconsumer;
+package com.github.aparnachaudhary.jaxrs.depot.examples.feedconsumer;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
