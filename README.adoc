@@ -50,4 +50,4 @@ http://192.168.59.103:7081/feed-consumer/rest/consumer/goodbye
 
 undeploy feed-producer.war --server-groups=other-server-group
 
-undeploy feed-consumer.war --server-groups=other-server-group
+undeploy feed-consumer.war --server-groups=main-server-group

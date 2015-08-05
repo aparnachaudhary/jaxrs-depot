@@ -3,6 +3,7 @@ package com.github.aparnachaudhary.jaxrs.depot.core.registry.infinispan;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.util.PojoMapper;
 import org.infinispan.manager.CacheContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ public class InfinispanRegistry implements EndpointRegistry {
     public void init() {
         this.cache = cc.getCache();
         cc.getCache().getCacheManager().addListener(new MemberDropListener(cache));
+        cc.getCache().addListener(new ClusteredCacheListener());
         LOG.info("Cache {}", cc.getCache().keySet());
     }
 
@@ -44,7 +46,7 @@ public class InfinispanRegistry implements EndpointRegistry {
         LOG.info("Adding endpoint '{}' to registry with base URI {} and service root {}", endpointInfo.getEndpointId(), endpointInfo.getBaseUri(),
                 endpointInfo.getServiceRoot());
         try {
-            cache.put(JsonUtil.toJson(endpointInfo.getEndpointId(), false), JsonUtil.toJson(endpointInfo, false));
+            cache.put(PojoMapper.toJson(endpointInfo.getEndpointId(), false), PojoMapper.toJson(endpointInfo, false));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,7 +63,7 @@ public class InfinispanRegistry implements EndpointRegistry {
         List<EndpointInfo> endpointInfoList = new ArrayList<EndpointInfo>();
         for (String value : cache.values()) {
             try {
-                endpointInfoList.add(JsonUtil.fromJson(value, EndpointInfo.class));
+                endpointInfoList.add(PojoMapper.fromJson(value, EndpointInfo.class));
             } catch (IOException e) {
                 e.printStackTrace();
             }
