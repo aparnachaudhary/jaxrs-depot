@@ -20,6 +20,15 @@ Remove server-one from the host xml.
 
 sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node2 -Djboss.http.port=8080 --host-config host-slave.xml
 
+== WildFly HC3
+
+docker run -it -p 7993:9990 -p 7083:8080 aparnachaudhary/wildfly-hc:9.0.0.Final
+
+Remove server-two from the host xml.
+
+sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node3 -Djboss.http.port=8080 --host-config host-slave.xml
+
+
 == Deploy WAR files
 
 [source,bash]
@@ -29,7 +38,7 @@ deploy /Users/Aparna/dev/repos/jaxrs-depot/examples/feed-producer/target/feed-pr
 
 [source,bash]
 -------------
-deploy /Users/Aparna/dev/repos/jaxrs-depot/examples/feed-consumer/target/feed-consumer.war --server-groups=other-server-group
+deploy /Users/Aparna/dev/repos/jaxrs-depot/examples/feed-consumer/target/feed-consumer.war --server-groups=main-server-group
 -------------
 
 == Verify cache behavior
