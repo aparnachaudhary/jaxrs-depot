@@ -14,7 +14,7 @@ import javax.management.*;
 import java.lang.management.ManagementFactory;
 
 /**
- * Created by Aparna on 8/2/15.
+ * @author Aparna Chaudhary
  */
 @Singleton
 @Startup
@@ -29,8 +29,8 @@ public class ResourceRegistry {
 
     @PostConstruct
     public void register() {
-        EndpointId endpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeId(System.getProperty(NODE_NAME)).setAppId("feed-producer")
-                .setEndpointId("producer")
+        EndpointId endpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeName(System.getProperty(NODE_NAME)).setAppName("feed-producer")
+                .setEndpointName("producer")
                 .createEndpointId();
         EndpointInfo endpointInfo = EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(endpointId).setBaseUri(getBaseUri("feed-producer/rest/"))
                 .setServiceRoot("producer").createEndpointInfo();

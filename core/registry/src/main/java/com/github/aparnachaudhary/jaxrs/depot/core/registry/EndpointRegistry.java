@@ -27,4 +27,21 @@ public interface EndpointRegistry {
      * @return list of registered endpoints
      */
     Collection<EndpointInfo> getEndpoints();
+
+    /**
+     * Returns endpoint matching the given application id and endpoint id
+     *
+     * @param appId      application id
+     * @param endpointId endpoint id
+     * @return true if endpoint is registered in the cache; false otherwise
+     */
+    boolean existsEndpoint(String appId, String endpointId);
+
+    /**
+     * Returns endpoint info for the given endpoint id.
+     *
+     * @param endpointId endpoint id
+     * @return {@link EndpointInfo}; null if none found
+     */
+    EndpointInfo getEndpoint(EndpointId endpointId);
 }

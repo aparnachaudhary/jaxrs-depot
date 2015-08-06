@@ -3,7 +3,7 @@ package com.github.aparnachaudhary.jaxrs.depot.core.registry.event;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 
 /**
- * Created by Aparna on 8/5/15.
+ * @author Aparna Chaudhary
  */
 public interface EndpointEvent {
 

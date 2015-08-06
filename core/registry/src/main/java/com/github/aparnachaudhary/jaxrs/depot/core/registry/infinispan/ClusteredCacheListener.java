@@ -34,11 +34,11 @@ public class ClusteredCacheListener {
     }
 
     @CacheEntryModified
-    public void onCacheEntryModifiedEvent(CacheEntryModifiedEvent modifiedEvent) {
+    public void onCacheEntryModifiedEvent(CacheEntryModifiedEvent<String, String> modifiedEvent) {
         if (modifiedEvent.isOriginLocal()) {
             LOG.info("entry '{}' modified", modifiedEvent.getKey());
             try {
-                event.fire(new EndpointStatusChanged(PojoMapper.fromJson(modifiedEvent.getKey().toString(), EndpointId.class)));
+                event.fire(new EndpointStatusChanged(PojoMapper.fromJson(modifiedEvent.getKey(), EndpointId.class)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -46,10 +46,10 @@ public class ClusteredCacheListener {
     }
 
     @CacheEntryCreated
-    public void onCacheEntryCreatedEvent(CacheEntryCreatedEvent createdEvent) {
+    public void onCacheEntryCreatedEvent(CacheEntryCreatedEvent<String, String> createdEvent) {
         LOG.info("entry '{}' created", createdEvent.getKey());
         try {
-            event.fire(new EndpointAdded(PojoMapper.fromJson(createdEvent.getKey().toString(), EndpointId.class)));
+            event.fire(new EndpointAdded(PojoMapper.fromJson(createdEvent.getKey(), EndpointId.class)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,10 +57,10 @@ public class ClusteredCacheListener {
     }
 
     @CacheEntryRemoved
-    public void onCacheEntryRemovedEvent(CacheEntryRemovedEvent removedEvent) {
+    public void onCacheEntryRemovedEvent(CacheEntryRemovedEvent<String, String> removedEvent) {
         LOG.info("entry '{}' removed", removedEvent.getKey());
         try {
-            event.fire(new EndpointRemoved(PojoMapper.fromJson(removedEvent.getKey().toString(), EndpointId.class)));
+            event.fire(new EndpointRemoved(PojoMapper.fromJson(removedEvent.getKey(), EndpointId.class)));
         } catch (IOException e) {
             e.printStackTrace();
         }

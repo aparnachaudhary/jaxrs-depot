@@ -61,7 +61,11 @@ public class InfinispanRegistry implements EndpointRegistry {
     @Override
     public void removeEndpoint(EndpointId endpointId) {
         LOG.info("Removing endpoint '{}' from registry", endpointId);
-        cache.remove(endpointId);
+        try {
+            cache.remove(PojoMapper.toJson(endpointId, false));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -75,6 +79,37 @@ public class InfinispanRegistry implements EndpointRegistry {
             }
         }
         return endpointInfoList;
+    }
+
+    @Override
+    public boolean existsEndpoint(String appId, String endpointName) {
+        boolean endpointExists = false;
+        EndpointId endpointId;
+        for (String key : cache.keySet()) {
+            try {
+                endpointId = PojoMapper.fromJson(key, EndpointId.class);
+                if (endpointId.getAppName().equalsIgnoreCase(appId) && endpointId.getEndpointName().equalsIgnoreCase(endpointName)) {
+                    endpointExists = true;
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return endpointExists;
+    }
+
+    @Override
+    public EndpointInfo getEndpoint(EndpointId endpointId) {
+        try {
+            String value = cache.get(PojoMapper.toJson(endpointId, false));
+            if (value != null) {
+                return PojoMapper.fromJson(value, EndpointInfo.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

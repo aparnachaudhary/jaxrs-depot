@@ -42,12 +42,12 @@ public class MemberDropListener {
         List<Address> dropped = minus(oldMembers, newMembers);
         List<Address> joined = minus(newMembers, oldMembers);
         for (Address address : dropped) {
-            LOG.info("Drop Address {}", address);
+            LOG.info("Node '{}' left the cluster", address);
             dropAllServices(address);
         }
 
         for (Address address : joined) {
-            LOG.info("Joined Address {}", address);
+            LOG.info("Node '{}' joined the cluster", address);
         }
     }
 
@@ -64,7 +64,7 @@ public class MemberDropListener {
             cache.keySet().stream().filter(
                     cacheKey -> {
                         try {
-                            return PojoMapper.fromJson(cacheKey, EndpointId.class).getNodeId().equalsIgnoreCase(address.toString());
+                            return PojoMapper.fromJson(cacheKey, EndpointId.class).getNodeName().equalsIgnoreCase(address.toString());
                         } catch (IOException e) {
                             e.printStackTrace();
                             return false;

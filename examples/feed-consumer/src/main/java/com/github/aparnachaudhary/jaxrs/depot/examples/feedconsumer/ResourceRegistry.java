@@ -3,14 +3,13 @@ package com.github.aparnachaudhary.jaxrs.depot.examples.feedconsumer;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
-import com.github.aparnachaudhary.jaxrs.depot.core.registry.event.EndpointAdded;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.management.*;
 import java.lang.management.ManagementFactory;
@@ -32,14 +31,40 @@ public class ResourceRegistry {
 
     @PostConstruct
     public void register() {
-        EndpointId endpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeId(System.getProperty(NODE_NAME)).setAppId("feed-consumer")
-                .setEndpointId("consumer")
+        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppName("feed-producer").setEndpointName("producer")
                 .createEndpointId();
-        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppId("feed-producer").setEndpointId("producer")
+        if (endpointRegistry.existsEndpoint(producerEndpointId.getAppName(), producerEndpointId.getEndpointName())) {
+            EndpointId consumerEndpointId = getLocalEndpointId();
+            if (!endpointRegistry.existsEndpoint(consumerEndpointId.getAppName(), consumerEndpointId.getEndpointName())) {
+                EndpointInfo endpointInfo = EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(consumerEndpointId)
+                        .setBaseUri(getBaseUri("feed-consumer/rest/"))
+                        .setServiceRoot("consumer").addDependency(producerEndpointId).createEndpointInfo();
+                endpointRegistry.addEndpoint(endpointInfo);
+            }
+        }
+    }
+
+    private EndpointId getLocalEndpointId() {
+        return EndpointId.EndpointIdBuilder.newBuilder().setNodeName(System.getProperty(NODE_NAME)).setAppName("feed-consumer")
+                .setEndpointName("consumer")
                 .createEndpointId();
-        EndpointInfo endpointInfo = EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(endpointId).setBaseUri(getBaseUri("feed-consumer/rest/"))
-                .setServiceRoot("consumer").addDependency(producerEndpointId).createEndpointInfo();
-        endpointRegistry.addEndpoint(endpointInfo);
+    }
+
+    @PreDestroy
+    public void unregister() {
+        EndpointInfo consumerEndpointInfo = endpointRegistry.getEndpoint(getLocalEndpointId());
+        if (consumerEndpointInfo != null) {
+            endpointRegistry.removeEndpoint(getLocalEndpointId());
+        }
+    }
+
+    public boolean dependenciesExist() {
+        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppName("feed-producer").setEndpointName("producer")
+                .createEndpointId();
+        if (endpointRegistry.existsEndpoint(producerEndpointId.getAppName(), producerEndpointId.getEndpointName())) {
+            return true;
+        }
+        return false;
     }
 
     private String getBaseUri(String contextRoot) {

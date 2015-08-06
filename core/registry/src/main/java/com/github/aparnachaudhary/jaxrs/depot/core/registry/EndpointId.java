@@ -1,59 +1,48 @@
 package com.github.aparnachaudhary.jaxrs.depot.core.registry;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.Serializable;
 
 public class EndpointId implements Serializable {
 
-    private String nodeId;
-    private String appId;
-    private String endpointId;
+    private String nodeName;
+    private String appName;
+    private String endpointName;
 
-    public EndpointId() {
+    private EndpointId() {
     }
 
-    public EndpointId(String nodeId, String appId, String endpointId) {
-        this.nodeId = nodeId;
-        this.appId = appId;
-        this.endpointId = endpointId;
+    public EndpointId(String nodeName, String appName, String endpointName) {
+        this.nodeName = nodeName;
+        this.appName = appName;
+        this.endpointName = endpointName;
     }
 
-    public String getNodeId() {
-        return nodeId;
+    public String getNodeName() {
+        return nodeName;
     }
 
-    public String getAppId() {
-        return appId;
+    public String getAppName() {
+        return appName;
     }
 
-    public String getEndpointId() {
-        return endpointId;
+    public String getEndpointName() {
+        return endpointName;
     }
 
-    public boolean startsWith(String s) {
-        return false;
-    }
-
-    public String createCacheKey() {
-        return nodeId.concat("_").concat(appId).concat("_").concat(endpointId);
-    }
-
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "EndpointId{" +
-                "nodeId='" + nodeId + '\'' +
-                ", appId='" + appId + '\'' +
-                ", endpointId='" + endpointId + '\'' +
+                "nodeName='" + nodeName + '\'' +
+                ", appName='" + appName + '\'' +
+                ", endpointName='" + endpointName + '\'' +
                 '}';
     }
 
-
     public static final class EndpointIdBuilder {
 
-        private String nodeId;
-        private String appId;
-        private String endpointId;
+        private String nodeName;
+        private String appName;
+        private String endpointName;
 
         private EndpointIdBuilder() {
         }
@@ -62,23 +51,23 @@ public class EndpointId implements Serializable {
             return new EndpointIdBuilder();
         }
 
-        public EndpointIdBuilder setNodeId(String nodeId) {
-            this.nodeId = nodeId;
+        public EndpointIdBuilder setNodeName(String nodeName) {
+            this.nodeName = nodeName;
             return this;
         }
 
-        public EndpointIdBuilder setAppId(String appId) {
-            this.appId = appId;
+        public EndpointIdBuilder setAppName(String appName) {
+            this.appName = appName;
             return this;
         }
 
-        public EndpointIdBuilder setEndpointId(String endpointId) {
-            this.endpointId = endpointId;
+        public EndpointIdBuilder setEndpointName(String endpointName) {
+            this.endpointName = endpointName;
             return this;
         }
 
         public EndpointId createEndpointId() {
-            return new EndpointId(nodeId, appId, endpointId);
+            return new EndpointId(nodeName, appName, endpointName);
         }
     }
 }
