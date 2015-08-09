@@ -1,32 +1,56 @@
 == WildFly DC
 
+[source,bash]
+-------------
 docker run -it -p 9990:9990 -p 9999:9999 aparnachaudhary/wildfly-dc:9.0.0.Final
+-------------
 
+[source,bash]
+-------------
 sh /opt/jboss/wildfly/bin/domain.sh -b 0.0.0.0 -bmanagement 0.0.0.0 --host-config host-master.xml
+-------------
 
 == WildFly HC1
 
+[source,bash]
+-------------
 docker run -it -p 7991:9990 -p 7081:8080 aparnachaudhary/wildfly-hc:9.0.0.Final
+-------------
 
 Remove server-one from the host xml.
 
+[source,bash]
+-------------
 sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node1 -Djboss.http.port=8080 --host-config host-slave.xml
+-------------
 
 == WildFly HC2
 
+[source,bash]
+-------------
 docker run -it -p 7992:9990 -p 7082:8080 aparnachaudhary/wildfly-hc:9.0.0.Final
+-------------
 
 Remove server-one from the host xml.
 
+[source,bash]
+-------------
 sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node2 -Djboss.http.port=8080 --host-config host-slave.xml
+-------------
 
 == WildFly HC3
 
+[source,bash]
+-------------
 docker run -it -p 7993:9990 -p 7083:8080 aparnachaudhary/wildfly-hc:9.0.0.Final
+-------------
 
 Remove server-two from the host xml.
 
+[source,bash]
+-------------
 sh /opt/jboss/wildfly/bin/domain.sh -Djboss.domain.master.address=192.168.59.103 -b `hostname -i` -Djboss.node.name=node3 -Djboss.http.port=8080 --host-config host-slave.xml
+-------------
 
 
 == Deploy WAR files
@@ -47,7 +71,38 @@ http://192.168.59.103:7081/feed-producer/rest/producer/greet
 
 http://192.168.59.103:7081/feed-consumer/rest/consumer/goodbye
 
+== UnDeploy WAR files
 
+[source,bash]
+-------------
 undeploy feed-producer.war --server-groups=other-server-group
 
 undeploy feed-consumer.war --server-groups=main-server-group
+-------------
+
+
+== Setup multiple nodes with standalone mode
+
+=== Node1:
+
+[source,bash]
+-------------
+docker run -it -p 6991:9990 -p 6081:8080 aparnachaudhary/wildfly:9.0.0.Final
+-------------
+
+[source,bash]
+-------------
+sh /opt/jboss/wildfly/bin/standalone.sh -b `hostname -i` -bmanagement 0.0.0.0 -Djboss.node.name=snode1 -c standalone-ha-jaxrs.xml
+-------------
+
+=== Node2:
+
+[source,bash]
+-------------
+docker run -it -p 6992:9990 -p 6082:8080 aparnachaudhary/wildfly:9.0.0.Final
+-------------
+
+[source,bash]
+-------------
+sh /opt/jboss/wildfly/bin/standalone.sh -b `hostname -i` -bmanagement 0.0.0.0 -Djboss.node.name=snode2 -c standalone-ha-jaxrs.xml
+-------------

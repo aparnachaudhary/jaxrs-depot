@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @author Aparna Chaudhary
  */
-@Listener
+@Listener(clustered = true, sync = false, observation = Listener.Observation.POST)
 public class MemberDropListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(MemberDropListener.class);

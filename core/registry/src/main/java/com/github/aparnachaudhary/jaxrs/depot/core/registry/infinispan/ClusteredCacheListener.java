@@ -22,7 +22,7 @@ import java.io.IOException;
 /**
  * @author Aparna Chaudhary
  */
-@Listener
+@Listener(clustered = true, sync = false, observation = Listener.Observation.POST)
 public class ClusteredCacheListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClusteredCacheListener.class);
@@ -38,7 +38,8 @@ public class ClusteredCacheListener {
         if (modifiedEvent.isOriginLocal()) {
             LOG.info("entry '{}' modified", modifiedEvent.getKey());
             try {
-                event.fire(new EndpointStatusChanged(PojoMapper.fromJson(modifiedEvent.getKey(), EndpointId.class)));
+                EndpointId endpointId = PojoMapper.fromJson(modifiedEvent.getKey(), EndpointId.class);
+                event.fire(new EndpointStatusChanged(endpointId));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -47,9 +48,10 @@ public class ClusteredCacheListener {
 
     @CacheEntryCreated
     public void onCacheEntryCreatedEvent(CacheEntryCreatedEvent<String, String> createdEvent) {
-        LOG.info("entry '{}' created", createdEvent.getKey());
         try {
-            event.fire(new EndpointAdded(PojoMapper.fromJson(createdEvent.getKey(), EndpointId.class)));
+            EndpointId endpointId = PojoMapper.fromJson(createdEvent.getKey(), EndpointId.class);
+            LOG.info("entry '{}' created", createdEvent.getKey());
+            event.fire(new EndpointAdded(endpointId));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,9 +60,10 @@ public class ClusteredCacheListener {
 
     @CacheEntryRemoved
     public void onCacheEntryRemovedEvent(CacheEntryRemovedEvent<String, String> removedEvent) {
-        LOG.info("entry '{}' removed", removedEvent.getKey());
         try {
-            event.fire(new EndpointRemoved(PojoMapper.fromJson(removedEvent.getKey(), EndpointId.class)));
+            EndpointId endpointId = PojoMapper.fromJson(removedEvent.getKey(), EndpointId.class);
+            LOG.info("entry '{}' removed", removedEvent.getKey());
+            event.fire(new EndpointRemoved(endpointId));
         } catch (IOException e) {
             e.printStackTrace();
         }
