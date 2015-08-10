@@ -27,7 +27,7 @@ No need to install yet another tool - Operations Bliss!
 
 === Quickstart: ===
 
-link:GettingStarted.asciidoc[Getting Started Guide]
+link:GettingStarted.adoc[Getting Started Guide]
 
 
 === Feedback: ===
