@@ -1,0 +1,39 @@
+== JAX-RS Service Registry and Discovery ==
+
+This project provides a registry for JAX-RS Endpoints.
+
+=== But Why?
+
+Lot of enterprise projects do not run on Amazon cloud; so problems solved by Eureka, ZooKeeper are non-existent in many cases. But still sometimes you need a
+registry of endpoints e.g. in cases where Service A can only only be started in Service B is available.
+
+No need to install yet another tool - Operations Bliss!
+
+=== Features
+
+* Provides an API for applications to register their endpoints in the central registry
+** On deployment
+** On successful bootstrap
+* Provides an API to remove the endpoint from registry
+** On application un-deployment
+** On server stop/crash
+* Endpoint can depend on other endpoints
+* When an endpoint is added/removed to/from the registry; the dependent endpoints are notified
+* and more...
+
+=== Requirements: ===
+* Apache Maven version 3.x
+* Infinispan 7.x
+
+=== Quickstart: ===
+
+link:GettingStarted.asciidoc[Getting Started Guide]
+
+
+=== Feedback: ===
+
+Please feel free to raise bug reports or feature requests here https://github.com/aparnachaudhary/jaxrs-depot/issues?state=open[Issues].
+
+=== Licensing and Copyright: ===
+
+The project is licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0]
