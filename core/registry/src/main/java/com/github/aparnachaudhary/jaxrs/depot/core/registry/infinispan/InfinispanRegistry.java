@@ -15,10 +15,7 @@ import javax.annotation.Resource;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Regarding use of {@link ManagedBean} - See https://developer.jboss.org/message/872450
@@ -82,13 +79,13 @@ public class InfinispanRegistry implements EndpointRegistry {
     }
 
     @Override
-    public boolean existsEndpoint(String appId, String endpointName) {
+    public boolean existsEndpoint(String appName, String endpointName) {
         boolean endpointExists = false;
         EndpointId endpointId;
         for (String key : cache.keySet()) {
             try {
                 endpointId = PojoMapper.fromJson(key, EndpointId.class);
-                if (endpointId.getAppName().equalsIgnoreCase(appId) && endpointId.getEndpointName().equalsIgnoreCase(endpointName)) {
+                if (endpointId.getAppName().equalsIgnoreCase(appName) && endpointId.getEndpointName().equalsIgnoreCase(endpointName)) {
                     endpointExists = true;
                     break;
                 }
@@ -110,6 +107,17 @@ public class InfinispanRegistry implements EndpointRegistry {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean existsDependencies(EndpointInfo endpointInfo) {
+        Set<EndpointId> dependencies = endpointInfo.getDependencies();
+        for (EndpointId dependency : dependencies) {
+            if (!existsEndpoint(dependency.getAppName(), dependency.getEndpointName())) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

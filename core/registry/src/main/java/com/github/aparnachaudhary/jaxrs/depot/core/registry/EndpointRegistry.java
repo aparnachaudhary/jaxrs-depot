@@ -44,4 +44,6 @@ public interface EndpointRegistry {
      * @return {@link EndpointInfo}; null if none found
      */
     EndpointInfo getEndpoint(EndpointId endpointId);
+
+    boolean existsDependencies(EndpointInfo endpointInfo);
 }

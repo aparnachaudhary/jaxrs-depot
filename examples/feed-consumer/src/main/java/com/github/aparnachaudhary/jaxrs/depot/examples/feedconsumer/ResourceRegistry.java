@@ -35,66 +35,56 @@ public class ResourceRegistry {
     private EndpointRegistry endpointRegistry;
 
     /**
-     *
      * @param init
      */
     public void onInitialize(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        LOG.debug("CDI: started : {}", init);
+        LOG.info("Started : {}", init);
         register();
     }
 
     /**
-     *
+     * @param init
+     */
+    public void onDestroy(@Observes @Destroyed(ApplicationScoped.class) Object init) {
+        LOG.info("Destroyed : {}", init);
+        unregister();
+    }
+
+    /**
      * @param endpointAdded
      */
     public void onEndpointAdded(@Observes EndpointAdded endpointAdded) {
         EndpointId endpointId = endpointAdded.getEndpointId();
         LOG.info("=========== endpointAdded: {} ===========", endpointId);
-        if (isProducerEndpoint(endpointId)) {
-            register();
-        }
+        register();
     }
 
     /**
-     *
      * @param endpointRemoved
      */
     public void onEndpointRemoved(@Observes EndpointRemoved endpointRemoved) {
         EndpointId endpointId = endpointRemoved.getEndpointId();
         LOG.info("=========== endpointRemoved: {} ===========", endpointId);
-        if (isProducerEndpoint(endpointId)) {
-            if (!dependenciesExist()) {
-                unregister();
-            }
+        if (!endpointRegistry.existsDependencies(getLocalEndpoint())) {
+            unregister();
         }
     }
 
-    /**
-     *
-     * @param init
-     */
-    public void onDestroy(@Observes @Destroyed(ApplicationScoped.class) Object init) {
-        LOG.info("CDI: destroyed : {}", init);
-    }
-
     private void register() {
-        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppName(PRODUCER_APP_NAME).setEndpointName(PRODUCER_ENDPOINT_NAME)
-                .createEndpointId();
-        if (endpointRegistry.existsEndpoint(producerEndpointId.getAppName(), producerEndpointId.getEndpointName())) {
-            EndpointId consumerEndpointId = getLocalEndpointId();
-            if (!endpointRegistry.existsEndpoint(consumerEndpointId.getAppName(), consumerEndpointId.getEndpointName())) {
-                EndpointInfo endpointInfo = EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(consumerEndpointId)
-                        .setBaseUri(getBaseUri("feed-consumer/rest/"))
-                        .setServiceRoot("consumer").addDependency(producerEndpointId).createEndpointInfo();
-                endpointRegistry.addEndpoint(endpointInfo);
+        EndpointInfo consumerEndpointInfo = getLocalEndpoint();
+        if (endpointRegistry.existsDependencies(consumerEndpointInfo)) {
+            if (!endpointRegistry.existsEndpoint(consumerEndpointInfo.getEndpointId().getAppName(), consumerEndpointInfo.getEndpointId().getEndpointName())) {
+                endpointRegistry.addEndpoint(consumerEndpointInfo);
             }
+        } else {
+            LOG.warn("All dependent Services are not yet available for {}", consumerEndpointInfo.getEndpointId());
         }
     }
 
     private void unregister() {
-        EndpointInfo consumerEndpointInfo = endpointRegistry.getEndpoint(getLocalEndpointId());
+        EndpointInfo consumerEndpointInfo = endpointRegistry.getEndpoint(getLocalEndpoint().getEndpointId());
         if (consumerEndpointInfo != null) {
-            endpointRegistry.removeEndpoint(getLocalEndpointId());
+            endpointRegistry.removeEndpoint(getLocalEndpoint().getEndpointId());
         }
     }
 
@@ -102,16 +92,15 @@ public class ResourceRegistry {
         return endpointId.getAppName().equalsIgnoreCase(PRODUCER_APP_NAME) && endpointId.getEndpointName().equalsIgnoreCase(PRODUCER_ENDPOINT_NAME);
     }
 
-    private boolean dependenciesExist() {
-        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppName(PRODUCER_APP_NAME).setEndpointName(PRODUCER_ENDPOINT_NAME)
-                .createEndpointId();
-        return endpointRegistry.existsEndpoint(producerEndpointId.getAppName(), producerEndpointId.getEndpointName());
-    }
-
-    private EndpointId getLocalEndpointId() {
-        return EndpointId.EndpointIdBuilder.newBuilder().setNodeName(System.getProperty(NODE_NAME)).setAppName(APP_NAME)
+    private EndpointInfo getLocalEndpoint() {
+        EndpointId consumerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeName(System.getProperty(NODE_NAME)).setAppName(APP_NAME)
                 .setEndpointName(ENDPOINT_NAME)
                 .createEndpointId();
+        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppName(PRODUCER_APP_NAME).setEndpointName(PRODUCER_ENDPOINT_NAME)
+                .createEndpointId();
+        return EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(consumerEndpointId)
+                .setBaseUri(getBaseUri("feed-consumer/rest/"))
+                .setServiceRoot("consumer").addDependency(producerEndpointId).createEndpointInfo();
     }
 
     private String getBaseUri(String contextRoot) {
