@@ -13,13 +13,12 @@ public class EndpointInfo implements Serializable {
     private String baseUri;
     private String serviceRoot;
     private EndpointStatus status;
-
-    private Set<EndpointId> dependencies;
+    private Set<DependencyId> dependencies;
 
     public EndpointInfo() {
     }
 
-    public EndpointInfo(EndpointId endpointId, String baseUri, String serviceRoot, EndpointStatus status, Set<EndpointId> dependencies) {
+    public EndpointInfo(EndpointId endpointId, String baseUri, String serviceRoot, EndpointStatus status, Set<DependencyId> dependencies) {
         this.endpointId = endpointId;
         this.baseUri = baseUri;
         this.serviceRoot = serviceRoot;
@@ -43,7 +42,7 @@ public class EndpointInfo implements Serializable {
         return status;
     }
 
-    public Set<EndpointId> getDependencies() {
+    public Set<DependencyId> getDependencies() {
         return dependencies;
     }
 
@@ -62,7 +61,7 @@ public class EndpointInfo implements Serializable {
         private String baseUri;
         private String serviceRoot;
         private EndpointStatus status;
-        private Set<EndpointId> dependencies;
+        private Set<DependencyId> dependencies;
 
         public EndpointInfoBuilder() {
         }
@@ -91,7 +90,7 @@ public class EndpointInfo implements Serializable {
             return this;
         }
 
-        public EndpointInfoBuilder addDependency(EndpointId dependency) {
+        public EndpointInfoBuilder addDependency(DependencyId dependency) {
             if (this.dependencies == null) {
                 this.dependencies = new HashSet<>();
             }
@@ -99,7 +98,7 @@ public class EndpointInfo implements Serializable {
             return this;
         }
 
-        public EndpointInfoBuilder setDependencies(Set<EndpointId> dependencies) {
+        public EndpointInfoBuilder setDependencies(Set<DependencyId> dependencies) {
             this.dependencies = dependencies;
             return this;
         }

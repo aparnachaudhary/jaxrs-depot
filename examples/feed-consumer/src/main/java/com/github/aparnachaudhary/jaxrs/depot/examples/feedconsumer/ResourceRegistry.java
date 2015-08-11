@@ -1,5 +1,6 @@
 package com.github.aparnachaudhary.jaxrs.depot.examples.feedconsumer;
 
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.DependencyId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
@@ -73,9 +74,7 @@ public class ResourceRegistry {
     private void register() {
         EndpointInfo consumerEndpointInfo = getLocalEndpoint();
         if (endpointRegistry.existsDependencies(consumerEndpointInfo)) {
-            if (!endpointRegistry.existsEndpoint(consumerEndpointInfo.getEndpointId().getAppName(), consumerEndpointInfo.getEndpointId().getEndpointName())) {
-                endpointRegistry.addEndpoint(consumerEndpointInfo);
-            }
+            endpointRegistry.addEndpoint(consumerEndpointInfo);
         } else {
             LOG.warn("All dependent Services are not yet available for {}", consumerEndpointInfo.getEndpointId());
         }
@@ -88,16 +87,12 @@ public class ResourceRegistry {
         }
     }
 
-    private boolean isProducerEndpoint(EndpointId endpointId) {
-        return endpointId.getAppName().equalsIgnoreCase(PRODUCER_APP_NAME) && endpointId.getEndpointName().equalsIgnoreCase(PRODUCER_ENDPOINT_NAME);
-    }
-
     private EndpointInfo getLocalEndpoint() {
         EndpointId consumerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setNodeName(System.getProperty(NODE_NAME)).setAppName(APP_NAME)
                 .setEndpointName(ENDPOINT_NAME)
                 .createEndpointId();
-        EndpointId producerEndpointId = EndpointId.EndpointIdBuilder.newBuilder().setAppName(PRODUCER_APP_NAME).setEndpointName(PRODUCER_ENDPOINT_NAME)
-                .createEndpointId();
+        DependencyId producerEndpointId = DependencyId.DependencyIdBuilder.newBuilder().setAppName(PRODUCER_APP_NAME).setEndpointName(PRODUCER_ENDPOINT_NAME)
+                .createDependencyId();
         return EndpointInfo.EndpointInfoBuilder.newBuilder().setEndpointId(consumerEndpointId)
                 .setBaseUri(getBaseUri("feed-consumer/rest/"))
                 .setServiceRoot("consumer").addDependency(producerEndpointId).createEndpointInfo();

@@ -22,12 +22,9 @@ public final class PojoMapper {
         return m.readValue(jsonAsString, pojoClass);
     }
 
-    public static String toJson(Object pojo, boolean prettyPrint) throws IOException {
+    public static String toJson(Object pojo) throws IOException {
         StringWriter sw = new StringWriter();
         JsonGenerator jg = jf.createGenerator(sw);
-        if (prettyPrint) {
-            jg.useDefaultPrettyPrinter();
-        }
         m.writeValue(jg, pojo);
         return sw.toString();
     }

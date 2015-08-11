@@ -1,5 +1,6 @@
 package com.github.aparnachaudhary.jaxrs.depot.core.registry.infinispan;
 
+import com.github.aparnachaudhary.jaxrs.depot.core.registry.DependencyId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointId;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointInfo;
 import com.github.aparnachaudhary.jaxrs.depot.core.registry.EndpointRegistry;
@@ -49,7 +50,7 @@ public class InfinispanRegistry implements EndpointRegistry {
         LOG.info("Adding endpoint '{}' to registry with base URI {} and service root {}", endpointInfo.getEndpointId(), endpointInfo.getBaseUri(),
                 endpointInfo.getServiceRoot());
         try {
-            cache.put(PojoMapper.toJson(endpointInfo.getEndpointId(), false), PojoMapper.toJson(endpointInfo, false));
+            cache.put(PojoMapper.toJson(endpointInfo.getEndpointId()), PojoMapper.toJson(endpointInfo));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +60,7 @@ public class InfinispanRegistry implements EndpointRegistry {
     public void removeEndpoint(EndpointId endpointId) {
         LOG.info("Removing endpoint '{}' from registry", endpointId);
         try {
-            cache.remove(PojoMapper.toJson(endpointId, false));
+            cache.remove(PojoMapper.toJson(endpointId));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,7 +100,7 @@ public class InfinispanRegistry implements EndpointRegistry {
     @Override
     public EndpointInfo getEndpoint(EndpointId endpointId) {
         try {
-            String value = cache.get(PojoMapper.toJson(endpointId, false));
+            String value = cache.get(PojoMapper.toJson(endpointId));
             if (value != null) {
                 return PojoMapper.fromJson(value, EndpointInfo.class);
             }
@@ -111,8 +112,8 @@ public class InfinispanRegistry implements EndpointRegistry {
 
     @Override
     public boolean existsDependencies(EndpointInfo endpointInfo) {
-        Set<EndpointId> dependencies = endpointInfo.getDependencies();
-        for (EndpointId dependency : dependencies) {
+        Set<DependencyId> dependencies = endpointInfo.getDependencies();
+        for (DependencyId dependency : dependencies) {
             if (!existsEndpoint(dependency.getAppName(), dependency.getEndpointName())) {
                 return false;
             }
