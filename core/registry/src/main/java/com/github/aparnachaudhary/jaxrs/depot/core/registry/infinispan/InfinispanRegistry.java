@@ -29,7 +29,7 @@ public class InfinispanRegistry implements EndpointRegistry {
 
     private static final Logger LOG = LoggerFactory.getLogger(InfinispanRegistry.class);
 
-    @Resource(lookup = "java:jboss/infinispan/container/myCache")
+    @Resource(lookup = "java:jboss/infinispan/container/jaxrsDepotContainer")
     private CacheContainer cc;
 
     private Map<String, String> cache;

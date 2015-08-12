@@ -45,5 +45,11 @@ public interface EndpointRegistry {
      */
     EndpointInfo getEndpoint(EndpointId endpointId);
 
+    /**
+     * Verifies if the endpoints for dependencies are already registered.
+     *
+     * @param endpointInfo endpoint for which dependencies are verified
+     * @return true if dependencies are registred; false otherwise
+     */
     boolean existsDependencies(EndpointInfo endpointInfo);
 }

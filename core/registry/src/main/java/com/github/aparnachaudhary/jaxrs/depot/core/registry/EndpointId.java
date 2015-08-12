@@ -2,6 +2,9 @@ package com.github.aparnachaudhary.jaxrs.depot.core.registry;
 
 import java.io.Serializable;
 
+/**
+ * @author Aparna Chaudhary
+ */
 public class EndpointId implements Serializable {
 
     private String nodeName;
